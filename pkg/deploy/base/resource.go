@@ -113,13 +113,17 @@ func (r *ResourceManager) getResource(resPath string, resID string) (map[string]
 	r.Log.Infof("Reading: %s", resURI)
 	_, err := r.APIServer.Read(context.Background(), resURI, &rawResInfo)
 	if err != nil {
+		r.Log.Infof("Err while reading resource: %v", err)
 		return nil, err
 	}
 	res := strings.TrimLeft(resPath, "/")
+	r.log.Infof("Get res: %v", res)
 	data, ok := rawResInfo[res].(map[string]interface{})
 	if !ok {
+		r.log.Infof("Get error while casting type: %v", err)
 		return nil, errors.New("invalid resource type")
 	}
+	r.log.Infof("Get data: %v", data)
 	return data, nil
 }
 
